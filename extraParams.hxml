@@ -1,1 +1,2 @@
 -lib perf.js
+-L EventEmitter3

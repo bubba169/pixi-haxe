@@ -1,45 +1,39 @@
-package pixi.accessibility;
+package pixi.core.accessibility;
 
-import haxe.extern.EitherType;
+import js.html.HtmlElement;
 import pixi.core.math.shapes.Rectangle;
 import pixi.core.renderers.AbstractRenderer;
 
-@:native("PIXI.accessibility.AccessibilityManager")
+@:native("PIXI.AccessibilityManager")
 extern class AccessibilityManager {
 	/**
-	 * The Accessibility manager reacreates the ability to tab and and have content read by screen
-	 * readers. This is very important as it can possibly help people with disabilities access pixi
-	 * content.
-	 *
-	 * Much like interaction any DisplayObject can be made accessible. This manager will map the
-	 * events as if the mouse was being used, minimizing the efferot required to implement.
-	 *
-	 * @class
-	 * @memberof PIXI
+	 * The Accessibility manager recreates the ability to tab and have content read by screen readers. This is very 
+	 * important as it can possibly help people with disabilities access PixiJS content.
+	 * 
+	 * A DisplayObject can be made accessible just like it can be made interactive. This manager will map the events as
+	 * if the mouse was being used, minimizing the effort required to implement.
+	 * 
+	 * An instance of this class is automatically created by default, and can be found at renderer.plugins.accessibility
 	 */
 	function new(renderer:AbstractRenderer);
 
 	/**
 	 * Setting this to true will visually show the divs
-	 *
-	 * @type {Bool}
 	 */
 	var debug:Bool;
 
 	/**
-	 * A flag
+	 * Value of true if accessibility is currently active and accessibility layers are showing.
 	 */
 	var isActive(default, null):Bool;
 
 	/**
-	 * A flag
+	 * Value of true if accessibility is enabled for touch devices.
 	 */
 	var isMobileAccessibility(default, null):Bool;
 
 	/**
 	 * The renderer this accessibility manager works for.
-	 *
-	 * @member {AbstractRenderer}
 	 */
 	var renderer:AbstractRenderer;
 
@@ -51,7 +45,12 @@ extern class AccessibilityManager {
 
 	/**
 	 * Destroys the accessibility manager
-	 *
 	 */
 	function destroy():Void;
+
+	/**
+	 * Private function that will visually add the information to the accessibility div
+	 * @param div
+	 */
+	function updateDebugHTML(div:HtmlElement): Void;
 }

@@ -1,6 +1,6 @@
 package pixi.core.renderers;
 
-import pixi.accessibility.AccessibilityManager;
+import pixi.core.accessibility.AccessibilityManager;
 import pixi.core.renderers.webgl.extract.Extract;
 import pixi.interaction.InteractionManager;
 

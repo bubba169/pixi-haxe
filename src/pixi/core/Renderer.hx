@@ -1,12 +1,13 @@
-package pixi.core.renderers.webgl;
+package pixi.core;
 
+import js.html.CanvasElement;
 import js.html.webgl.RenderingContext;
 import pixi.core.Pixi.BlendModes;
 import pixi.core.Pixi.ScaleModes;
 import pixi.core.display.DisplayObject;
 import pixi.core.display.Transform;
 import pixi.core.math.shapes.Rectangle;
-import pixi.core.renderers.AbstractRenderer;
+import pixi.core.AbstractRenderer;
 import pixi.core.renderers.systems.BatchSystem;
 import pixi.core.renderers.systems.ContextSystem;
 import pixi.core.renderers.systems.FrameBufferSystem;
@@ -24,6 +25,17 @@ import pixi.core.textures.Texture;
 import pixi.core.textures.RenderTexture;
 import pixi.core.renderers.webgl.managers.MaskManager;
 import pixi.core.renderers.systems.FilterSystem;
+
+typedef RendererOptions = {
+	> AbstractRendererOptions,
+
+	/**
+	 * If WebGL context already exists, all parameters must be taken from it.
+	 * 
+	 * @default undefined
+	 */
+	 @:optional var context:Dynamic;
+}
 
 @:native("PIXI.Renderer")
 extern class Renderer extends AbstractRenderer {

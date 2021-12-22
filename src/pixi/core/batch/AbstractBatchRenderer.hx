@@ -1,44 +1,20 @@
-package pixi.core.renderers.webgl;
+package pixi.core.batch;
 
 import js.lib.Uint16Array;
-import js.html.webgl.RenderingContext;
-import pixi.core.Pixi.BlendModes;
-import pixi.core.Pixi.ScaleModes;
 import pixi.core.Shader;
-import pixi.core.display.DisplayObject;
-import pixi.core.display.Transform;
-import pixi.core.math.shapes.Rectangle;
-import pixi.core.renderers.AbstractRenderer;
-import pixi.core.renderers.systems.BatchSystem;
-import pixi.core.renderers.systems.ContextSystem;
-import pixi.core.renderers.systems.FrameBufferSystem;
-import pixi.core.renderers.systems.GeometrySystem;
-import pixi.core.renderers.systems.MaskSystem;
-import pixi.core.renderers.systems.ProjectionSystem;
-import pixi.core.renderers.systems.RenderTextureSystem;
-import pixi.core.renderers.systems.ShaderSystem;
-import pixi.core.renderers.systems.StateSystem;
-import pixi.core.renderers.systems.StencilSystem;
-import pixi.core.renderers.systems.TextureGCSystem;
-import pixi.core.renderers.systems.TextureSystem;
-import pixi.core.renderers.webgl.extract.Extract;
 import pixi.core.renderers.webgl.utils.BatchShaderGenerator;
-import pixi.core.renderers.webgl.utils.ObjectRenderer;
-import pixi.core.renderers.webgl.utils.RenderTarget;
+import pixi.core.batch.ObjectRenderer;
 import pixi.core.sprites.Sprite;
-import pixi.core.textures.Texture;
-import pixi.core.textures.RenderTexture;
-import pixi.core.math.Matrix;
-import pixi.core.renderers.webgl.managers.MaskManager;
-import pixi.core.renderers.systems.FilterSystem;
 
 @:native("PIXI.AbstractBatchRenderer")
 extern class AbstractBatchRenderer extends ObjectRenderer {
 	/**
 	 * Renderer dedicated to drawing and batching sprites.
-	 * This is the default batch renderer. It buffers objects with texture-based geometries and renders them
-	 * in batches. It uploads multiple textures to the GPU to reduce to the number of draw calls.
-	 * @param	renderer The renderer this works for.
+	 * 
+	 * This is the default batch renderer. It buffers objects with texture-based geometries and renders them in batches. 
+	 * It uploads multiple textures to the GPU to reduce to the number of draw calls.
+	 * 
+	 * @param renderer The renderer this works for.
 	 */
 	function new(renderer:Renderer);
 

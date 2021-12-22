@@ -1,15 +1,104 @@
-package pixi.core.renderers;
+package pixi.core;
 
 import js.html.CanvasElement;
-import pixi.core.Pixi.RendererType;
-import pixi.core.Pixi.ScaleModes;
-import pixi.core.RenderOptions;
+import pixi.Pixi.RendererType;
+import pixi.Pixi.ScaleModes;
+import pixi.core.Renderer.RendererOptions;
 import pixi.core.display.DisplayObject;
-import pixi.core.math.shapes.Rectangle;
+import pixi.math.shapes.Rectangle;
 import pixi.core.textures.RenderTexture;
 import pixi.core.renderers.webgl.utils.RenderTarget;
-import pixi.interaction.EventEmitter;
-import pixi.core.math.Matrix;
+import pixi.utils.EventEmitter;
+import pixi.math.Matrix;
+
+typedef AbstractRendererOptions = {
+	/**
+	 * The width of the renderers view.
+	 * 
+	 * @default 800
+	 */
+	@:optional var width:Int;
+
+	/**
+	 * The height of the renderers view. 
+	 * 
+	 * @default 600
+	 */
+	@:optional var height:Int;
+
+	/**
+	 * The canvas to use as a view, optional.
+	 * 
+	 * @default undefined
+	 */
+	@:optional var view:CanvasElement;
+
+	/**
+	 * Pass-through value for canvas' context alpha property. If you want to set transparency, 
+	 * please use backgroundAlpha. This option is for cases where the canvas needs to be opaque, 
+	 * possibly for performance reasons on some older devices.
+	 * 
+	 * @default false
+	 */
+	 @:optional var useContextAlpha:Bool;
+
+	/**
+ 	 * Resizes renderer view in CSS pixels to allow for resolutions other than 1.
+	 * 
+	 * @default false
+ 	 */
+	@:optional var autoDensity:Bool;
+
+	/**
+	 * Sets antialias. If not available natively then FXAA antialiasing is used.
+	 * 
+	 * @default false
+	 */
+	@:optional var antialias:Bool;
+	
+	/**
+	 * The resolution / device pixel ratio of the renderer.
+	 * 
+	 * @default PIXI.settings.RESOLUTION
+	 */
+	@:optional var resolution:Float;
+	
+	/**
+	 * Enables drawing buffer preservation, enable this if you need to call toDataUrl on the WebGL context.
+	 * 
+	 * @default false
+	 */
+	@:optional var preserveDrawingBuffer:Bool;
+
+	/**
+	 * This sets if the renderer will clear the canvas or not before the new render pass. 
+	 * If you wish to set this to false, you must set preserveDrawingBuffer to true.
+	 * 
+	 * @default true
+	 */
+	@:optional var clearBeforeRender:Bool;
+
+	/**
+	 * The background color of the rendered area (shown if not transparent).
+	 * 
+	 * @default 0x000000
+	 */
+	@:optional var backgroundColor:Int;
+
+	/**
+	 * Value from 0 (fully transparent) to 1 (fully opaque).
+	 * 
+	 * @default 1
+	 */
+	@:optional var backgroundAlpha:Float;
+
+	/**
+	 * Parameter passed to WebGL context, set to "high-performance" for devices with dual graphics card.
+	 * 
+	 * @default undefined
+	 */
+	@:optional var powerPreference:String;
+}
 
 @:native("PIXI.AbstractRenderer")
 extern class AbstractRenderer extends EventEmitter {
@@ -18,37 +107,17 @@ extern class AbstractRenderer extends EventEmitter {
 	 * @param	system The name of the system this renderer is for.
 	 * @param	options The optional renderer parameters.
 	 */
-	public function new(system:String, ?options:RenderOptions);
-
-	/**
-	 * The background color as a number.
-	 */
-	private var _backgroundColor:Int;
-
-	/**
-	 * The background color as an [R, G, B] array.
-	 */
-	private var _backgroundColorRgba:Array<Int>;
-
-	/**
-	 * The background color as a string.
-	 */
-	private var _backgroundColorString:String;
-
-	/**
-	 * The last root object that the renderer tried to render.
-	 */
-	private var _lastObjectRendered:DisplayObject;
-
-	/**
-	 * This temporary display object used as the parent of the currently being rendered item.
-	 */
-	private var _tempDisplayObjectParent:DisplayObject;
+	public function new(system:String, ?options:RendererOptions);
 
 	/**
 	 * Whether CSS dimensions of canvas view should be resized to screen dimensions automatically.
 	 */
-	private var autoDensity:Bool;
+	var autoDensity:Bool;
+
+	/**
+	 * The background color alpha. Setting this to 0 will make the canvas transparent.
+	 */
+	var backgroundAlpha:Float;
 
 	/**
 	 * The background color to fill if not transparent
@@ -72,7 +141,7 @@ extern class AbstractRenderer extends EventEmitter {
 	/**
 	 * The supplied constructor options.
 	 */
-	var options(default, null):RenderOptions;
+	var options(default, null):AbstractRendererOptions;
 
 	/**
 	 * Collection of plugins.
@@ -96,14 +165,15 @@ extern class AbstractRenderer extends EventEmitter {
 	var screen:Rectangle;
 
 	/**
-	 * Whether the render view is transparent.
-	 */
-	var transparent:Bool;
-
-	/**
 	 * The type of the renderer.
 	 */
 	var type:RendererType;
+
+	/**
+	 * Pass-thru setting for the the canvas' context alpha property. This is typically 
+	 * not something you need to fiddle with. If you want transparency, use backgroundAlpha.
+	 */
+	var useContextAlpha:Bool;
 
 	/**
 	 * The canvas element that everything is drawn to.
@@ -115,6 +185,26 @@ extern class AbstractRenderer extends EventEmitter {
 	 */
 	var width(default, null):Float;
 
+	/**
+	 * The background color as a number.
+	 */
+	private var _backgroundColor:Int;
+
+	 /**
+	  * The background color as an [R, G, B, A] array.
+	  */
+	private var _backgroundColorRgba:Array<Int>;
+ 
+	 /**
+	  * The background color as a string.
+	  */
+	private var _backgroundColorString:String;
+ 
+	 /**
+	  * The last root object that the renderer tried to render.
+	  */
+	private var _lastObjectRendered:DisplayObject;
+ 
 	/**
 	 * Removes everything from the renderer and optionally removes the Canvas DOM element.
 	 * @param	removeView Removes the Canvas element from the DOM.

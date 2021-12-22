@@ -1,6 +1,7 @@
 -cp samples/src
 -cp src
 -lib perf.js
+-L EventEmitter3
 -dce full
 -D analyzer-optimize
 -D stats

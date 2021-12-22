@@ -1,4 +1,4 @@
-package pixi.core;
+package pixi;
 
 import haxe.extern.EitherType;
 import js.lib.RegExp;
