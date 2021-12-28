@@ -1,4 +1,4 @@
-package pixi.core.renderers.webgl.filters;
+package pixi.core.filters;
 
 import pixi.Pixi.MSAAQuality;
 import pixi.Pixi.BlendModes;

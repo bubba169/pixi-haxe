@@ -7,7 +7,6 @@ import pixi.core.graphics.Graphics;
 import pixi.math.Matrix;
 import pixi.math.Point;
 import pixi.math.shapes.Rectangle;
-import pixi.core.renderers.webgl.filters.Filter;
 import pixi.core.sprites.Sprite;
 import pixi.utils.EventEmitter;
 

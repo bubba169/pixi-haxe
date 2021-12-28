@@ -1,31 +1,36 @@
 package pixi.core.renderers.systems;
 
-import pixi.core.display.DisplayObject;
-import pixi.core.math.Matrix;
-import pixi.core.math.shapes.Rectangle;
-import pixi.core.renderers.webgl.Renderer;
-import pixi.core.renderers.webgl.UniformGroup;
-import pixi.core.renderers.webgl.filters.Filter;
+import pixi.display.DisplayObject;
+import pixi.math.Matrix;
+import pixi.math.shapes.Rectangle;
+import pixi.core.Renderer;
+import pixi.renderers.webgl.UniformGroup;
+import pixi.core.filters.Filter;
 import pixi.core.sprites.Sprite;
 import pixi.core.textures.RenderTexture;
 import pixi.core.renderers.systems.System;
 
-@:native("PIXI.systems.FilterSystem")
-extern class FilterSystem extends System {
-	/**
-	 * Active state
-	 */
-	var activeState:Dynamic;
-
+@:native("PIXI.FilterSystem")
+extern class FilterSystem implements ISystem {
 	/**
 	 * List of filters for the FilterSystem
 	 */
-	private var defaultFilterStack(default, null):Array<Dynamic>;
+	var defaultFilterStack(default, null):Array<Dynamic>;
+	
+	/**
+	 * Whether to clear output renderTexture in AUTO/BLIT mode. See PIXI.CLEAR_MODES.
+	 */
+	var forceClear:Bool;
 
 	/**
-	 * This uniform group is attached to filter uniforms when used
+	 * a pool for storing filter states, save us creating new ones each tick
 	 */
-	var globalUniforms:UniformGroup;
+	var statePool:Array<FilterState>;
+
+	/**
+	 * stores a bunch of PO2 textures used for filtering
+	 */
+	var texturePool:RenderTexturePool;
 
 	/**
 	 * A very simple geometry used when drawing a filter effect to the screen
@@ -38,23 +43,26 @@ extern class FilterSystem extends System {
 	var quadUvs:QuadUv;
 
 	/**
-	 * a pool for storing filter states, save us creating new ones each tick
-	 */
-	var statePool:Array<Dynamic>;
-
-	/**
 	 * Temporary rect for maths
 	 */
 	var tempRect:Rectangle;
 
+	
+
 	/**
-	 * stores a bunch of PO2 textures used for filtering
+	 * Active state
 	 */
-	var texturePool:Dynamic;
+	private var activeState:Dynamic;
+
+	/**
+	 * This uniform group is attached to filter uniforms when used
+	 */
+	private var globalUniforms:UniformGroup;
 
 	/**
 	 * System plugin to the renderer to manage the filters.
-	 * @param	renderer The renderer this manager works for
+	 *
+	 * @param renderer The renderer this manager works for
 	 */
 	function new(renderer:Renderer);
 

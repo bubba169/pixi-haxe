@@ -1,15 +1,32 @@
 package pixi.core.textures;
 
+import pixi.Pixi.MSAAQuality;
+import pixi.Pixi.Targets;
+import pixi.Pixi.Types;
+import pixi.Pixi.Formats;
+import pixi.Pixi.WrapModes;
+import pixi.Pixi.MipmapModes;
+import pixi.Pixi.AlphaModes;
 import haxe.extern.EitherType;
 import js.lib.Float32Array;
 import js.lib.Uint8Array;
-import pixi.core.Pixi.Formats;
-import pixi.core.Pixi.MipmapModes;
-import pixi.core.Pixi.ScaleModes;
-import pixi.core.Pixi.Targets;
-import pixi.core.Pixi.Types;
-import pixi.interaction.EventEmitter;
 import pixi.resources.Resource;
+
+typedef BaseTextureOptions = {
+	?alphaMode:AlphaModes,
+	?mipmap:MipmapModes,
+	?anisotropicLevel:Float,
+	?width:Int,
+	?height:Int,
+	?wrapMode:WrapModes,
+	?format:Formats,
+	?type:Types,
+	?target:Targets,
+	?resolution:Float,
+	?multisample:MSAAQuality,
+	?resourceOptions:Dynamic,
+	?pixiIdPrefix:String,
+};
 
 @:native("PIXI.BaseTexture")
 extern class BaseTexture extends EventEmitter {
@@ -250,15 +267,4 @@ extern class BaseTexture extends EventEmitter {
 	 * Invalidates the object. Texture becomes valid if width and height are greater than zero.
 	 */
 	function update():Void;
-}
-
-typedef BaseTextureOptions = {
-	?width:Int,
-	?height:Int,
-	?autoLoad:Bool,
-	?scale:Float,
-	?createBitmap:Bool,
-	?crossorigin:Bool,
-	?autoPlay:Bool,
-	?updateFPS:Float,
 }
